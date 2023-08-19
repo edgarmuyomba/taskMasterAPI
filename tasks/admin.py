@@ -3,4 +3,4 @@ from .models import *
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['title', 'owner']
