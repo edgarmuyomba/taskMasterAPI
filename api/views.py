@@ -1,5 +1,3 @@
-from django.shortcuts import render
-from rest_framework import generics 
 from tasks.serializers import TaskSerializer
 from rest_framework.response import Response
 from tasks.models import *
@@ -36,3 +34,10 @@ def deletetask(request, pk):
         return Response({"success": "task deleted"})
     return Response({"error": "failed to delete task"})
     
+@api_view(['GET'])
+def search(request):
+    query = request.GET.get('query', None)
+    if query:
+        results = Task.objects.search(query).filter(owner=request.user)
+        serializer = TaskSerializer(results, many=True)
+        return Response(data=serializer.data)
