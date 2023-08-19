@@ -14,3 +14,11 @@ class TaskSerializer(serializers.ModelSerializer):
         if value < date.today():
             raise serializers.ValidationError("Cannot enter a date in the past")
         return value
+    
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        instance.due_date = validated_data.get('due_date', instance.due_date)
+        instance.status = validated_data.get('status', instance.status)
+        instance.save()
+        return instance
